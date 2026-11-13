@@ -63,12 +63,12 @@ tests/unit | tests/integration
 ```bash
 npm test                  # unitarias + integración HTTP (repositorio en memoria)
 npm run test:coverage     # + reporte en coverage/lcov-report/index.html (umbral 80%)
-npm run test:mongo        # además, integración contra MongoDB real (mongodb-memory-server o MONGO_TEST_URI)
+npm run test:mongo        # integración contra MongoDB real (requiere mongod en marcha)
 npm run lint              # ESLint
 ```
 - **Unitarias:** servicio con repositorio simulado (`jest.fn`, equivalente a Mockito), validador, manejador de errores, repositorios.
 - **Integración:** flujo completo de cada endpoint con Supertest (serialización JSON, códigos HTTP, cabecera `Location`).
-- **Integración con Mongo real:** `tests/integration/mongo.integration.test.js` (se omite por defecto; actívala con `npm run test:mongo`).
+- **Integración con MongoDB real:** `tests/integration/mongo-e2e.test.js` comprueba el CRUD contra una base real, verificando además el documento persistido y el índice único. Se ejecuta con el **runner nativo de Node** (`node --test`) y no con Jest, porque el entorno aislado de Jest altera los metadatos del handshake del driver de MongoDB y el servidor rechaza la conexión (`Missing required sub-document 'driver'`). Por eso Jest lo excluye en `testPathIgnorePatterns`.
 - Umbral global de 80 % (líneas, ramas, funciones, sentencias) forzado en `jest.config.js`: la build falla si no se cumple.
 
 ## SonarQube

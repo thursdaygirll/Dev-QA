@@ -35,7 +35,7 @@ class MongoProductoRepository {
 
   async update(id, datos) {
     const doc = await this.model
-      .findByIdAndUpdate(id, datos, { new: true, runValidators: true })
+      .findByIdAndUpdate(id, datos, { returnDocument: 'after', runValidators: true })
       .lean();
     return aDto(doc);
   }

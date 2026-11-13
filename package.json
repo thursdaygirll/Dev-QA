@@ -8,7 +8,7 @@
     "start:demo": "REPOSITORY=memory node src/server.js",
     "test": "jest --runInBand",
     "test:coverage": "jest --runInBand --coverage",
-    "test:mongo": "RUN_MONGO_IT=true jest --runInBand --coverage",
+    "test:mongo": "node --test tests/integration/mongo-e2e.test.js",
     "lint": "eslint .",
     "sonar": "sonar-scanner"
   },

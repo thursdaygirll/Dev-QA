@@ -57,7 +57,7 @@ describe('MongoProductoRepository (modelo simulado)', () => {
   it('update usa new + runValidators', async () => {
     model.findByIdAndUpdate.mockReturnValue(lean(doc));
     await repo.update('abc', { nombre: 'n' });
-    expect(model.findByIdAndUpdate).toHaveBeenCalledWith('abc', { nombre: 'n' }, { new: true, runValidators: true });
+    expect(model.findByIdAndUpdate).toHaveBeenCalledWith('abc', { nombre: 'n' }, { returnDocument: 'after', runValidators: true });
   });
 
   it('delete devuelve el eliminado o null', async () => {
