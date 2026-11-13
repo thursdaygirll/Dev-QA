@@ -3,3 +3,7 @@ coverage/
 .scannerwork/
 .env
 *.log
+
+# scripts locales de evidencias
+paso*.sh
+evidencias.sh
