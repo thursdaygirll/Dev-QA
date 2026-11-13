@@ -1,5 +1,129 @@
-Test Suites: 1 skipped, 5 passed, 5 of 6 total
-Tests:       2 skipped, 94 passed, 96 total
-Snapshots:   0 total
-Time:        0.882 s, estimated 1 s
-Ran all test suites.
+
+SKIP tests/integration/mongo.integration.test.js  (0 pasadas, 2 omitidas)
+  API + MongoDB real
+    [omitida] CRUD completo persistido en Mongo
+    [omitida] índice único de Mongo -> 409 en código repetido
+
+PASS tests/integration/api.integration.test.js  (21 pasadas)
+  POST /api/productos
+    [ok] crea un producto: 201, Location y JSON serializado
+    [ok] 400 con detalle por campo cuando faltan datos
+    [ok] 400 con formato de código y precio inválidos
+    [ok] 400 con JSON malformado
+    [ok] 413 con cuerpo demasiado grande
+    [ok] 409 al repetir el código
+  GET /api/productos
+    [ok] lista vacía al inicio
+    [ok] lista y filtra por categoría
+  GET /api/productos/:id
+    [ok] 200 con el producto
+    [ok] 404 si no existe
+    [ok] 400 si el id tiene formato inválido
+  PUT /api/productos/:id
+    [ok] 200 y refleja los cambios
+    [ok] 404 si no existe
+    [ok] 400 con datos inválidos
+    [ok] 409 si el nuevo código ya pertenece a otro producto
+  DELETE /api/productos/:id
+    [ok] 204 y luego 404 al consultarlo
+    [ok] 404 si no existe y 400 si el id es inválido
+  Otros endpoints
+    [ok] GET /health -> 200
+    [ok] ruta inexistente -> 404 en formato JSON
+    [ok] error inesperado del repositorio -> 500 genérico
+    [ok] Swagger UI disponible en /api-docs/
+
+PASS tests/unit/repositories.test.js  (10 pasadas)
+  MongoProductoRepository (modelo simulado)
+    [ok] aDto convierte _id en id y devuelve null si no hay documento
+    [ok] findAll ordena y mapea
+    [ok] findAll usa filtro vacío por defecto
+    [ok] findById y findByCodigo
+    [ok] create persiste y devuelve el DTO
+    [ok] update usa new + runValidators
+    [ok] delete devuelve el eliminado o null
+    [ok] usa el modelo real de Mongoose por defecto
+  MemoryProductoRepository
+    [ok] realiza el ciclo CRUD completo
+    [ok] devuelve null para ids o códigos inexistentes
+
+PASS tests/unit/validator.test.js  (35 pasadas)
+  validarProducto
+    [ok] acepta un producto válido y aplica valores por defecto
+    [ok] recorta espacios y conserva descripción y stock
+    [ok] rechaza cuerpo no-objeto: null
+    [ok] rechaza cuerpo no-objeto: undefined
+    [ok] rechaza cuerpo no-objeto: "texto"
+    [ok] rechaza cuerpo no-objeto: 5
+    [ok] rechaza cuerpo no-objeto: []
+    [ok] reporta todos los campos obligatorios faltantes
+    [ok] rechaza código con formato inválido abc-123
+    [ok] rechaza código con formato inválido AB-123
+    [ok] rechaza código con formato inválido ABC123
+    [ok] rechaza código con formato inválido ABC-12
+    [ok] rechaza código con formato inválido ABCD-123
+    [ok] rechaza nombre inválido
+    [ok] rechaza nombre inválido
+    [ok] rechaza nombre inválido
+    [ok] rechaza descripción demasiado larga o no textual
+    [ok] rechaza precio inválido 0
+    [ok] rechaza precio inválido -1
+    [ok] rechaza precio inválido "10"
+    [ok] rechaza precio inválido NaN
+    [ok] rechaza precio inválido Infinity
+    [ok] rechaza precio inválido null
+    [ok] rechaza stock inválido -1
+    [ok] rechaza stock inválido 1.5
+    [ok] rechaza stock inválido "3"
+    [ok] rechaza categoría inválida "a"
+    [ok] rechaza categoría inválida "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    [ok] rechaza categoría inválida ""
+    [ok] rechaza categoría inválida 5
+  validarId
+    [ok] acepta 24 caracteres hexadecimales
+    [ok] rechaza id inválido "123"
+    [ok] rechaza id inválido "zzzzzzzzzzzzzzzzzzzzzzzz"
+    [ok] rechaza id inválido ""
+    [ok] rechaza id inválido undefined
+
+PASS tests/unit/producto.service.test.js  (19 pasadas)
+  listar
+    [ok] lista todos sin filtro
+    [ok] filtra por categoría
+  obtener
+    [ok] devuelve el producto existente
+    [ok] lanza RecursoNoEncontradoError si no existe
+    [ok] lanza ValidacionError si el id es inválido y no consulta el repositorio
+  crear
+    [ok] crea un producto nuevo
+    [ok] lanza DatoDuplicadoError si el código ya existe
+    [ok] lanza ValidacionError con datos inválidos
+    [ok] traduce la clave duplicada de Mongo (condición de carrera) a DatoDuplicadoError
+    [ok] propaga errores inesperados del repositorio
+  actualizar
+    [ok] actualiza sin revisar duplicados si el código no cambia
+    [ok] lanza DatoDuplicadoError si el nuevo código pertenece a otro producto
+    [ok] permite cambiar a un código libre
+    [ok] lanza RecursoNoEncontradoError si no existe
+    [ok] valida id y cuerpo
+    [ok] traduce clave duplicada de Mongo y propaga otros errores
+  eliminar
+    [ok] elimina un producto existente
+    [ok] lanza RecursoNoEncontradoError si no existe
+    [ok] lanza ValidacionError con id inválido
+
+PASS tests/unit/error-handler.test.js  (9 pasadas)
+  errorHandler
+    [ok] mapea excepciones de negocio con su código HTTP
+    [ok] usa "Error" como razón para códigos no catalogados
+    [ok] JSON malformado -> 400
+    [ok] cuerpo demasiado grande -> 413
+    [ok] ValidationError de Mongoose -> 400 con detalles
+    [ok] clave duplicada de Mongo -> 409
+    [ok] error inesperado -> 500 sin filtrar detalles internos
+    [ok] también maneja un error nulo
+  notFoundHandler
+    [ok] genera un RecursoNoEncontradoError para rutas desconocidas
+
+Test Suites: 5 passed, 1 skipped, 6 total
+Tests:       94 passed, 2 skipped, 96 total
