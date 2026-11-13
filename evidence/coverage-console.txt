@@ -1,0 +1,35 @@
+
+> productos-api@1.0.0 test:coverage
+> jest --runInBand --coverage
+
+--------------------------------|---------|----------|---------|---------|-------------------
+File                            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+--------------------------------|---------|----------|---------|---------|-------------------
+All files                       |     100 |     99.1 |     100 |     100 |                   
+ src                            |     100 |      100 |     100 |     100 |                   
+  app.js                        |     100 |      100 |     100 |     100 |                   
+ src/controllers                |     100 |      100 |     100 |     100 |                   
+  producto.controller.js        |     100 |      100 |     100 |     100 |                   
+ src/errors                     |     100 |    66.66 |     100 |     100 |                   
+  index.js                      |     100 |    66.66 |     100 |     100 | 5                 
+ src/middleware                 |     100 |      100 |     100 |     100 |                   
+  error-handler.js              |     100 |      100 |     100 |     100 |                   
+ src/models                     |     100 |      100 |     100 |     100 |                   
+  producto.model.js             |     100 |      100 |     100 |     100 |                   
+ src/repositories               |     100 |      100 |     100 |     100 |                   
+  memory-producto.repository.js |     100 |      100 |     100 |     100 |                   
+  mongo-producto.repository.js  |     100 |      100 |     100 |     100 |                   
+ src/routes                     |     100 |      100 |     100 |     100 |                   
+  producto.routes.js            |     100 |      100 |     100 |     100 |                   
+ src/services                   |     100 |      100 |     100 |     100 |                   
+  producto.service.js           |     100 |      100 |     100 |     100 |                   
+ src/validators                 |     100 |      100 |     100 |     100 |                   
+  producto.validator.js         |     100 |      100 |     100 |     100 |                   
+--------------------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 100% ( 200/200 )
+Branches     : 99.1% ( 111/112 )
+Functions    : 100% ( 52/52 )
+Lines        : 100% ( 183/183 )
+================================================================================
